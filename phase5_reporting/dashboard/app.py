@@ -978,30 +978,27 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
     if breach_temporal is None or breach_temporal.empty:
         return None
 
+    # 1. Sort cleanly by hour matrix sequence
     df = breach_temporal.sort_values("hour").copy()
-    
-    # 1. Determine if a metric splitting column is safely present
-    color_col = "metric" if "metric" in df.columns else None
 
-    # 2. Build line plot cleanly with Plotly Express
+    # 2. Build line plot cleanly with absolute column properties (no metric grouping variables)
     fig = px.line(
         df,
         x="hour",
         y="breach_rate_pct",  
-        color=color_col,
-        color_discrete_sequence=[C_ACCENT, C_AMBER, C_RED, C_BLUE],
-        labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)", "metric": "Metric"},
+        labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)"},
     )
     
-    # 3. Explicitly overwrite hovertemplates to stop any global layout collision
+    # 3. Apply custom solid monochromatic accent color to the line
     fig.update_traces(
         mode="lines+markers",
         line_shape="linear",
-        marker_size=5,
+        line_color=C_ACCENT,  # Sleek unified brand accent color line
+        marker_size=6,
         hovertemplate="Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>",
     )
 
-    # 4. Apply clean layout styling parameters directly without unpacking **_LAYOUT_BASE
+    # 4. Apply strict layout overrides individually without expanding the shared layout dict
     fig.update_layout(
         margin=dict(l=40, r=20, t=45, b=40),
         hovermode="closest",
@@ -1013,17 +1010,10 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
             text="Hourly Activity Signature",
             font=dict(size=13, color="#8A9BB0", family="Inter, sans-serif"),
         ),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1,
-            title_text="",
-        ),
+        showlegend=False  # No need for a legend since it's a single, crisp timeline tracking profile
     )
 
-    # 5. Overwrite specific x and y gridlines safely
+    # 5. Inject isolated grid styling properties cleanly 
     fig.update_xaxes(
         tickmode="linear",
         tick0=0,
