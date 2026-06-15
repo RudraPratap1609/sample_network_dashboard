@@ -924,7 +924,7 @@ def _kpi_breach_by_metric(breach_metric: pd.DataFrame | None) -> go.Figure | Non
     """Horizontal bar: breach rate per KPI metric."""
     if breach_metric is None or breach_metric.empty:
         return None
-
+        
     df = breach_metric.sort_values("breach_rate_pct", ascending=True).copy()
     fig = px.bar(
         df,
@@ -938,6 +938,7 @@ def _kpi_breach_by_metric(breach_metric: pd.DataFrame | None) -> go.Figure | Non
         custom_data=["threshold", "breach_direction", "breach_count", "total_observations"],
         labels={"breach_rate_pct": "Breach Rate (%)", "display_name": ""},
     )
+    
     fig.update_traces(
         texttemplate="%{text:.1f}%",
         textposition="outside",
@@ -945,28 +946,32 @@ def _kpi_breach_by_metric(breach_metric: pd.DataFrame | None) -> go.Figure | Non
         hovertemplate=(
             "<b>%{y}</b><br>"
             "Breach rate · <b>%{x:.2f}%</b><br>"
-            "Threshold   · %{customdata[0]} (%{customdata[1]})<br>"
-            "Events      · %{customdata[2]:,} of %{customdata[3]:,}"
+            "Threshold · %{customdata[0]} (%{customdata[1]})<br>"
+            "Events · %{customdata[2]:,} of %{customdata[3]:,}"
             "<extra></extra>"
         ),
     )
+    
+    # 1. Update general configurations using your base global dictionary mapping
     fig.update_layout(
         **_LAYOUT_BASE,
         height=340,
         coloraxis_showscale=False,
-        xaxis=dict(
-            title="Breach rate (%)",
-            range=[0, df["breach_rate_pct"].max() * 1.28],
-            gridcolor="rgba(90,122,154,0.07)",
-        ),
         yaxis_title="",
         title=dict(
             text="Where breach pressure is concentrated",
             font=dict(size=13, color="#8A9BB0", family="Inter, sans-serif"),
         ),
     )
+    
+    # 2. FIX: Modify specific x-axis overrides cleanly to prevent keyword collisions
+    fig.update_xaxes(
+        title="Breach rate (%)",
+        range=[0, df["breach_rate_pct"].max() * 1.28],
+        gridcolor="rgba(90,122,154,0.07)"
+    )
+    
     return fig
-
 
 def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | None:
     """Bar: KPI breach rate by hour of day — highlights the busiest window."""
