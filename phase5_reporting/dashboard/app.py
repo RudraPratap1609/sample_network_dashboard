@@ -980,35 +980,33 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
 
     df = breach_temporal.sort_values("hour").copy()
     
-    # 1. Safely calculate or inject fallback display titles
-    if "display_name" not in df.columns:
-        if "metric" in df.columns:
-            df["display_name"] = df["metric"].map(lambda x: KPI_LABELS.get(x, x))
-        else:
-            df["display_name"] = "Breach Profile"
+    # 1. Ensure the grouping/color column safely tracks what's available
+    if "metric" in df.columns:
+        # Create display labels matching your global dictionary map
+        df["display_name"] = df["metric"].map(lambda x: KPI_LABELS.get(x, x))
+        color_col = "display_name"
+    else:
+        color_col = None
 
-    color_col = "display_name" if "display_name" in df.columns else None
-
-    # 2. Add 'display_name' right inside px.line's custom_data parameter
+    # 2. Build line plot cleanly without explicit custom_data signatures inside px.line
     fig = px.line(
         df,
         x="hour",
         y="breach_rate_pct",  
         color=color_col,
         color_discrete_sequence=[C_ACCENT, C_AMBER, C_RED, C_BLUE],
-        custom_data=["display_name"] if "display_name" in df.columns else None,
         labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)", "display_name": "Metric"},
     )
     
-    # 3. Read the custom_data cleanly via index mapping token %{customdata[0]}
+    # 3. Clean up the hover template without relying on customdata indexes
     fig.update_traces(
         mode="lines+markers",
         line_shape="linear",
         marker_size=5,
-        hovertemplate="<b>%{customdata[0]}</b><br>Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>",
+        hovertemplate="Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>",
     )
 
-    # Update general properties cleanly using base layout setup
+    # 4. Update layout base configs cleanly
     fig.update_layout(
         **_LAYOUT_BASE,
         height=300,
@@ -1027,7 +1025,7 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
         ),
     )
 
-    # Modify specific xaxis parameters cleanly to prevent layout dictionary collisions
+    # 5. Overwrite specific x-axis tick styles safely via explicit modifier
     fig.update_xaxes(
         tickmode="linear",
         tick0=0,
