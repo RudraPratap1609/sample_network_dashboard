@@ -1217,44 +1217,38 @@ def _alarm_severity_bar(alarm_severity: pd.DataFrame | None) -> go.Figure | None
 
 
 def _alarm_category_donut(alarm_category: pd.DataFrame | None) -> go.Figure | None:
-    """Donut chart: alarm volume share by root-cause category.
-    Uses a monochromatic blue family instead of a rainbow."""
+    """Donut chart: proportion of alarms by domain category."""
     if alarm_category is None or alarm_category.empty:
         return None
 
-    # Monochromatic palette — sophisticated, not a carnival
-    palette = [
-        C_BLUE, "#4A7FC1", C_TEAL, C_GREY,
-        C_PURPLE, C_MUTED, "#1A3A5A", "#2E6098",
-    ]
-    fig = go.Figure(
-        go.Pie(
-            labels=alarm_category["alarm_category"],
-            values=alarm_category["count"],
-            hole=0.52,
-            textinfo="label+percent",
-            textfont=dict(size=10),
-            hovertemplate=(
-                "<b>%{label}</b><br>"
-                "Count · %{value:,}<br>"
-                "Share · %{percent}<extra></extra>"
-            ),
-            marker=dict(
-                colors=palette[: len(alarm_category)],
-                line=dict(color="#070D14", width=2),
-            ),
-        )
+    fig = px.pie(
+        alarm_category,
+        values="alarm_count",
+        names="category",
+        hole=0.42,
+        color_discrete_sequence=[C_RED, C_AMBER, C_ACCENT, "#7C3AED", "#10B981"],
+        labels={"category": "Domain", "alarm_count": "Alarms"},
     )
+    fig.update_traces(
+        textposition="inside",
+        textinfo="percent+label",
+        hovertemplate="Category: <b>%{label}</b><br>Alarms: <b>%{value:,}</b> (%{percent})<extra></extra>",
+    )
+    
+    # 1. Standard layout base update
     fig.update_layout(
         **_LAYOUT_BASE,
         title=dict(
             text="What's triggering the most alarms",
             font=dict(size=13, color="#8A9BB0", family="Inter, sans-serif"),
         ),
-        margin=dict(l=10, r=10, t=48, b=10),
+        showlegend=False,
     )
+    
+    # 2. FIX: Safely override margin parameters using a clean, separate dict update
+    fig.update_layout(margin=dict(l=15, r=15, t=55, b=15))
+    
     return fig
-
 
 def _alarm_site_stacked(
     alarm_ne: pd.DataFrame | None, max_sites: int = 20
@@ -1278,6 +1272,7 @@ def _alarm_site_stacked(
     }
     available = {k: v for k, v in sev_col_map.items() if k in ne.columns}
 
+    # Fallback path if no explicit severity columns are found
     if not available:
         fig = px.bar(
             ne,
@@ -1285,6 +1280,8 @@ def _alarm_site_stacked(
             orientation="h",
             labels={"total_alarms": "Total alarms", "network_element_id": ""},
         )
+        
+        # 1. Base dictionary configuration mapping update
         fig.update_layout(
             **_LAYOUT_BASE,
             height=max(280, len(ne) * 26 + 80),
@@ -1293,8 +1290,12 @@ def _alarm_site_stacked(
                 font=dict(size=13, color="#8A9BB0", family="Inter, sans-serif"),
             ),
         )
+        
+        # 2. FIX: Isolated layout tuning
+        fig.update_xaxes(title="Total alarms")
         return fig
 
+    # Main path: Building custom stacked Graph Object traces
     fig = go.Figure()
     for col, sev_label in available.items():
         fig.add_trace(
@@ -1310,6 +1311,8 @@ def _alarm_site_stacked(
                 ),
             )
         )
+        
+    # 1. Base layout expansion update
     fig.update_layout(
         **_LAYOUT_BASE,
         barmode="stack",
@@ -1322,9 +1325,12 @@ def _alarm_site_stacked(
             orientation="h", yanchor="bottom", y=1.01,
             xanchor="right", x=1, font=dict(size=10),
         ),
-        xaxis_title="Total alarms",
-        yaxis_title="",
     )
+    
+    # 2. FIX: Safely assign titles and grid styles cleanly to prevent keyword dictionary collisions
+    fig.update_xaxes(title="Total alarms", gridcolor="rgba(90,122,154,0.07)", zeroline=False)
+    fig.update_yaxes(title="", gridcolor="rgba(90,122,154,0.05)", zeroline=False)
+    
     return fig
 
 
@@ -1332,8 +1338,11 @@ def _alarm_site_stacked(
 # 9.  CHART BUILDERS — ROOT CAUSE TAB
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _rc_scatter(ranked: pd.DataFrame) -> go.Figure:
+def _rc_scatter(ranked: pd.DataFrame) -> go.Figure | None:
     """Priority scatter map: bubble = (alarm type, KPI) causal pair."""
+    if ranked is None or ranked.empty:
+        return None
+        
     df = ranked.copy()
     df["cooccurrence_rate"] = (
         df.get("cooccurrence_rate", pd.Series(0.0, index=df.index)).fillna(0.0)
@@ -1380,18 +1389,23 @@ def _rc_scatter(ranked: pd.DataFrame) -> go.Figure:
             "cooccurrence_rate": "Co-occ. rate",
         },
     )
+    
     fig.update_traces(
         textposition="top center",
         textfont=dict(size=9, color="#8A9BB0"),
     )
 
-    median_y = float(df["n_alarm_events"].median())
+    # Calculate baselines safely with fallbacks
+    median_y = float(df["n_alarm_events"].median()) if not df["n_alarm_events"].empty else 0.0
     fig.add_vline(x=0.5,      line_dash="dot", line_color=C_GREY, opacity=0.35)
     fig.add_hline(y=median_y, line_dash="dot", line_color=C_GREY, opacity=0.35)
 
-    x_max = float(df["combined_score"].max())
-    y_q90 = float(df["n_alarm_events"].quantile(0.85))
-    y_q10 = float(df["n_alarm_events"].quantile(0.15))
+    x_max = float(df["combined_score"].max()) if not df["combined_score"].empty else 1.0
+    if pd.isna(x_max) or x_max <= 0:
+        x_max = 1.0
+        
+    y_q90 = float(df["n_alarm_events"].quantile(0.85)) if not df["n_alarm_events"].empty else 10.0
+    y_q10 = float(df["n_alarm_events"].quantile(0.15)) if not df["n_alarm_events"].empty else 1.0
 
     for txt, px_, py_, col in [
         ("high score · frequent → investigate now", x_max * 0.88, y_q90, C_RED),
@@ -1408,6 +1422,7 @@ def _rc_scatter(ranked: pd.DataFrame) -> go.Figure:
             borderpad=4,
         )
 
+    # 1. Update general structural parameters via base baseline configuration map
     fig.update_layout(
         **_LAYOUT_BASE,
         height=500,
@@ -1417,6 +1432,11 @@ def _rc_scatter(ranked: pd.DataFrame) -> go.Figure:
         ),
         legend_title="Priority tier",
     )
+    
+    # 2. FIX: Safely override specific axis grid behaviors without collision
+    fig.update_xaxes(gridcolor="rgba(90,122,154,0.07)", zeroline=False)
+    fig.update_yaxes(gridcolor="rgba(90,122,154,0.07)", zeroline=False)
+
     return fig
 
 
