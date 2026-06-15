@@ -1512,7 +1512,7 @@ def _rc_coo_heatmap(coo_df: pd.DataFrame) -> go.Figure | None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def tab_kpi(data: dict, nodes: list[str]) -> None:
-    """Render the Signal Health tab."""
+    """Render the Signal Health tab with error boundaries and data checks."""
     breach_metric   = data.get("breach_metric")
     breach_site     = _filter_ne(data.get("breach_site"),     nodes)
     breach_temporal = data.get("breach_temporal")
@@ -1537,19 +1537,27 @@ def tab_kpi(data: dict, nodes: list[str]) -> None:
     # ── Row 1: focal-point wide chart + narrow temporal sidebar ──────────────
     col_a, col_b = st.columns([1.5, 1])
     with col_a:
-        fig = _kpi_breach_by_metric(breach_metric)
-        if fig:
-            st.plotly_chart(fig, use_container_width=True)
+        # Check if the dataframe is completely missing or empty before passing to Plotly builders
+        if breach_metric is not None and not breach_metric.empty:
+            fig = _kpi_breach_by_metric(breach_metric)
+            if fig is not None:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                _empty_state("No structural chart details generated for metric breach profiles.", "📊")
         else:
             _empty_state(
                 "breach_summary_per_metric.csv not found.<br>"
                 "Run <code>python main.py --phase 4</code> to generate it.",
                 "📁",
             )
+            
     with col_b:
-        fig2 = _kpi_breach_by_hour(breach_temporal)
-        if fig2:
-            st.plotly_chart(fig2, use_container_width=True)
+        if breach_temporal is not None and not breach_temporal.empty:
+            fig2 = _kpi_breach_by_hour(breach_temporal)
+            if fig2 is not None:
+                st.plotly_chart(fig2, use_container_width=True)
+            else:
+                _empty_state("No data trend lines could be rendered for this sequence selection.", "🕐")
         else:
             _empty_state("breach_summary_temporal.csv not found.", "🕐")
 
@@ -1559,9 +1567,13 @@ def tab_kpi(data: dict, nodes: list[str]) -> None:
     _section_label(
         "Site-by-site exposure — how much each location contributes to the signal"
     )
-    fig3 = _kpi_site_heatmap(breach_site)
-    if fig3:
-        st.plotly_chart(fig3, use_container_width=True)
+    
+    if breach_site is not None and not breach_site.empty:
+        fig3 = _kpi_site_heatmap(breach_site)
+        if fig3 is not None:
+            st.plotly_chart(fig3, use_container_width=True)
+        else:
+            _empty_state("The density mapping metrics for these sites yielded an empty visual canvas.", "🗺️")
     elif breach_site is not None and breach_site.empty:
         _empty_state("No matching sites for the current selection.", "🔍")
     else:
@@ -1664,7 +1676,12 @@ def tab_kpi(data: dict, nodes: list[str]) -> None:
                 legend_title="KPI metric",
                 bargap=0.04,
             )
-            st.plotly_chart(fig_dur, use_container_width=True)
+            
+            # Explicit safety boundary check for the histogram output
+            if fig_dur is not None:
+                st.plotly_chart(fig_dur, use_container_width=True)
+            else:
+                _empty_state("Unable to project standard duration distribution parameters.", "📊")
 
         # Event log expander — fully configured dataframe
         with st.expander(
@@ -1709,7 +1726,6 @@ def tab_kpi(data: dict, nodes: list[str]) -> None:
             "or <code>kpi_degradation_periods.csv</code> hasn't been generated yet.",
             "✅",
         )
-
 
 def tab_alarms(data: dict, nodes: list[str]) -> None:
     """Render the Noise Floor tab."""
