@@ -980,25 +980,20 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
 
     df = breach_temporal.sort_values("hour").copy()
     
-    # 1. Ensure the grouping/color column safely tracks what's available
-    if "metric" in df.columns:
-        # Create display labels matching your global dictionary map
-        df["display_name"] = df["metric"].map(lambda x: KPI_LABELS.get(x, x))
-        color_col = "display_name"
-    else:
-        color_col = None
+    # 1. Determine if a metric splitting column is safely present
+    color_col = "metric" if "metric" in df.columns else None
 
-    # 2. Build line plot cleanly without explicit custom_data signatures inside px.line
+    # 2. Build line plot cleanly with Plotly Express
     fig = px.line(
         df,
         x="hour",
         y="breach_rate_pct",  
         color=color_col,
         color_discrete_sequence=[C_ACCENT, C_AMBER, C_RED, C_BLUE],
-        labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)", "display_name": "Metric"},
+        labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)", "metric": "Metric"},
     )
     
-    # 3. Clean up the hover template without relying on customdata indexes
+    # 3. Explicitly overwrite hovertemplates to stop any global layout collision
     fig.update_traces(
         mode="lines+markers",
         line_shape="linear",
@@ -1006,9 +1001,12 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
         hovertemplate="Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>",
     )
 
-    # 4. Update layout base configs cleanly
+    # 4. Apply clean layout styling parameters directly without unpacking **_LAYOUT_BASE
     fig.update_layout(
-        **_LAYOUT_BASE,
+        margin=dict(l=40, r=20, t=45, b=40),
+        hovermode="closest",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         height=300,
         yaxis_title="Breach Rate (%)",
         title=dict(
@@ -1025,12 +1023,17 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
         ),
     )
 
-    # 5. Overwrite specific x-axis tick styles safely via explicit modifier
+    # 5. Overwrite specific x and y gridlines safely
     fig.update_xaxes(
         tickmode="linear",
         tick0=0,
         dtick=2,
         gridcolor="rgba(90,122,154,0.07)",
+        zeroline=False
+    )
+    fig.update_yaxes(
+        gridcolor="rgba(90,122,154,0.07)",
+        zeroline=False
     )
 
     return fig
