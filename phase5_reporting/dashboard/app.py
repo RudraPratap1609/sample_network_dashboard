@@ -974,107 +974,95 @@ def _kpi_breach_by_metric(breach_metric: pd.DataFrame | None) -> go.Figure | Non
     return fig
 
 def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | None:
-    """Bar: KPI breach rate by hour of day — highlights the busiest window."""
+    """Line chart: breach frequency by hour of the day."""
     if breach_temporal is None or breach_temporal.empty:
         return None
 
-    bt      = breach_temporal.copy()
-    q75     = bt["breach_rate_pct"].quantile(0.75)
-    colours = [C_RED if v >= q75 else C_BLUE for v in bt["breach_rate_pct"]]
+    df = breach_temporal.sort_values("hour").copy()
+    fig = px.line(
+        df,
+        x="hour",
+        y="breach_count",
+        color="metric",
+        color_discrete_sequence=[C_ACCENT, C_AMBER, C_RED, C_BLUE],
+        labels={"hour": "Hour of day (0-23)", "breach_count": "Breach count"},
+    )
+    
+    fig.update_traces(
+        mode="lines+markers",
+        line_shape="linear",
+        marker_size=5,
+        hovertemplate="<b>%{colorscale}</b><br>Hour %{x}:00<br>Breaches: <b>%{y:,}</b><extra></extra>",
+    )
 
-    fig = go.Figure(
-        go.Bar(
-            x=bt["hour"],
-            y=bt["breach_rate_pct"],
-            marker_color=colours,
-            marker_line_width=0,
-            hovertemplate="<b>%{x}:00</b><br>Breach rate · %{y:.2f}%<extra></extra>",
-            name="",
-        )
-    )
-    fig.add_vrect(
-        x0=7.5, x1=21.5,
-        fillcolor=C_BLUE, opacity=0.05,
-        annotation_text="peak hours (08–22)",
-        annotation_position="top left",
-        annotation_font_size=9,
-        annotation_font_color=C_GREY,
-        line_width=0,
-    )
+    # Update general properties cleanly using base layout setup
     fig.update_layout(
         **_LAYOUT_BASE,
         height=300,
+        yaxis_title="Breach Count",
         title=dict(
-            text="When breaches happen — hour by hour",
+            text="Hourly Activity Signature",
             font=dict(size=13, color="#8A9BB0", family="Inter, sans-serif"),
         ),
-        xaxis=dict(
-            title="Hour of day", dtick=2, tick0=0,
-            gridcolor="rgba(90,122,154,0.07)",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            title_text="",
         ),
-        yaxis=dict(title="Breach rate (%)", gridcolor="rgba(90,122,154,0.07)"),
-        showlegend=False,
     )
+
+    # FIX: Overriding xaxis definitions safely via explicit modifier
+    fig.update_xaxes(
+        tickmode="linear",
+        tick0=0,
+        dtick=2,
+        gridcolor="rgba(90,122,154,0.07)",
+    )
+
     return fig
 
-
 def _kpi_site_heatmap(breach_site: pd.DataFrame | None) -> go.Figure | None:
-    """Annotated heatmap: sites × KPI metrics, colour-coded by breach rate."""
+    """Heatmap matrix: site vs metric breach intensities."""
     if breach_site is None or breach_site.empty:
         return None
 
-    breach_cols = [c for c in breach_site.columns if c.endswith("_breach_pct")]
-    if not breach_cols:
+    # Pivot dataframe values appropriately for intensity rendering
+    pivot_df = breach_site.pivot(
+        index="display_name", columns="network_element_id", values="breach_count"
+    ).fillna(0)
+
+    if pivot_df.empty:
         return None
 
-    heat = breach_site.set_index("network_element_id")[breach_cols].copy()
-    heat.columns = [
-        KPI_LABELS.get(c.replace("_breach_pct", ""), c.replace("_breach_pct", ""))
-        for c in breach_cols
-    ]
-    if "any_breach_pct" in breach_site.columns:
-        order = (
-            breach_site.set_index("network_element_id")["any_breach_pct"]
-            .sort_values(ascending=False).index.tolist()
-        )
-        heat = heat.reindex([s for s in order if s in heat.index])
-
-    z   = heat.values.tolist()
-    txt = [[f"{v:.1f}%" for v in row] for row in heat.values]
-
-    fig = go.Figure(
-        go.Heatmap(
-            z=z,
-            x=heat.columns.tolist(),
-            y=heat.index.tolist(),
-            colorscale="RdYlGn_r",
-            zmin=0, zmax=100,
-            text=txt,
-            texttemplate="%{text}",
-            textfont=dict(size=10),
-            colorbar=dict(
-                title="Breach %", thickness=12, len=0.85,
-                tickfont=dict(size=10),
-            ),
-            hovertemplate=(
-                "Site · <b>%{y}</b><br>"
-                "KPI  · %{x}<br>"
-                "Rate · <b>%{z:.1f}%</b><extra></extra>"
-            ),
-        )
+    fig = px.imshow(
+        pivot_df,
+        labels=dict(x="Network Node / Site ID", y="", color="Breaches"),
+        color_continuous_scale=[[0, "#1E222B"], [0.1, "rgba(43,94,167,0.4)"], [1, C_RED]],
     )
+
+    fig.update_traces(
+        hovertemplate="Node: <b>%{x}</b><br>Metric: <b>%{y}</b><br>Breaches: <b>%{z:,}</b><extra></extra>"
+    )
+
     fig.update_layout(
         **_LAYOUT_BASE,
-        height=max(280, len(heat) * 26 + 100),
-        title=dict(
-            text="Site × KPI breach heat (filtered selection)",
-            font=dict(size=13, color="#8A9BB0", family="Inter, sans-serif"),
+        height=380,
+        coloraxis_showscale=True,
+        coloraxis_colorbar=dict(
+            title="Events",
+            thickness=12,
+            len=0.8,
         ),
-        xaxis=dict(title="", tickangle=-30),
-        yaxis_title="",
     )
-    return fig
 
+    # FIX: Isolate specific configuration updates for X and Y axes cleanly
+    fig.update_xaxes(tickangle=45, gridcolor="rgba(90,122,154,0.05)")
+    fig.update_yaxes(gridcolor="rgba(90,122,154,0.05)")
+
+    return fig
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 8.  CHART BUILDERS — NOISE FLOOR TAB
