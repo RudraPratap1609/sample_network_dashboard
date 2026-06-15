@@ -980,23 +980,31 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
 
     df = breach_temporal.sort_values("hour").copy()
     
-    # Check if 'metric' column exists for grouping, fallback to no grouping if missing
-    color_col = "metric" if "metric" in df.columns else None
+    # Secure mapping for dynamic column constraints
+    if "display_name" not in df.columns:
+        if "metric" in df.columns:
+            df["display_name"] = df["metric"].map(lambda x: KPI_LABELS.get(x, x))
+        else:
+            df["display_name"] = "Breach Profile"
+
+    # Check if 'metric' or 'display_name' column exists for trace separation
+    color_col = "display_name" if "display_name" in df.columns else None
 
     fig = px.line(
         df,
         x="hour",
-        y="breach_rate_pct",  # FIX: Matched to the exact column present in your dataframe
+        y="breach_rate_pct",  # Explicitly matches available data metrics
         color=color_col,
         color_discrete_sequence=[C_ACCENT, C_AMBER, C_RED, C_BLUE],
-        labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)"},
+        labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)", "display_name": "Metric"},
     )
     
     fig.update_traces(
         mode="lines+markers",
         line_shape="linear",
         marker_size=5,
-        hovertemplate="Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>",
+        hovertemplate="<b>%{customdata[0]}</b><br>Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>",
+        custom_data=[df["display_name"]] if "display_name" in df.columns else None
     )
 
     # Update general properties cleanly using base layout setup
