@@ -1,0 +1,97 @@
+alarm_type,kpi_metric,kpi_display,n_alarm_events,n_with_kpi_data,baseline_mean,peak_deviation,peak_lag_hours,effect_at_onset,degrades_kpi,abs_deviation,pct_deviation
+RACH Congestion,throughput_mbps,Throughput (Mbps),11,11,81.0641,-58.8651,0.75,-58.1541,True,58.8651,-72.62
+High Utilization,throughput_mbps,Throughput (Mbps),16,16,81.0641,-58.7998,0.0,-58.7998,True,58.7998,-72.53
+Low Throughput,throughput_mbps,Throughput (Mbps),21,21,81.0641,-57.988,0.0,-57.988,True,57.988,-71.53
+Call Drop Rate High,throughput_mbps,Throughput (Mbps),15,15,81.0641,-57.0315,0.0,-57.0315,True,57.0315,-70.35
+Battery Backup Fail,throughput_mbps,Throughput (Mbps),18,18,81.0641,-56.1975,0.25,-54.6886,True,56.1975,-69.32
+Transmission Fault,throughput_mbps,Throughput (Mbps),16,16,81.0641,-54.9885,0.75,-54.0141,True,54.9885,-67.83
+HO Failure Rate High,throughput_mbps,Throughput (Mbps),20,19,81.0641,-52.9299,0.75,-49.1926,True,52.9299,-65.29
+SW Process Restart,throughput_mbps,Throughput (Mbps),14,14,81.0641,-52.4456,0.0,-52.4456,True,52.4456,-64.7
+High Interference,throughput_mbps,Throughput (Mbps),16,16,81.0641,-48.7079,0.5,-48.1623,True,48.7079,-60.09
+Fan Unit Failure,throughput_mbps,Throughput (Mbps),16,16,81.0641,-48.3535,0.25,-46.6685,True,48.3535,-59.65
+Link Down,throughput_mbps,Throughput (Mbps),16,16,81.0641,-48.011,0.0,-48.011,True,48.011,-59.23
+High Latency,throughput_mbps,Throughput (Mbps),16,16,81.0641,-46.4773,0.25,-45.2816,True,46.4773,-57.33
+SW Process Restart,latency_ms,Latency (ms),14,14,22.0405,37.8509,0.5,35.9174,True,37.8509,171.73
+HO Failure Rate High,latency_ms,Latency (ms),20,19,22.0405,37.5274,0.25,36.929,True,37.5274,170.27
+High Interference,latency_ms,Latency (ms),16,16,22.0405,37.4551,0.0,37.4551,True,37.4551,169.94
+Fan Unit Failure,latency_ms,Latency (ms),16,16,22.0405,36.8864,0.75,36.3589,True,36.8864,167.36
+Transmission Fault,latency_ms,Latency (ms),16,16,22.0405,36.8857,0.0,36.8857,True,36.8857,167.35
+Call Drop Rate High,latency_ms,Latency (ms),15,15,22.0405,36.4815,0.5,34.3935,True,36.4815,165.52
+RACH Congestion,latency_ms,Latency (ms),11,11,22.0405,36.1359,0.5,35.3577,True,36.1359,163.95
+Low Throughput,latency_ms,Latency (ms),21,21,22.0405,35.9681,0.25,34.82,True,35.9681,163.19
+Link Down,latency_ms,Latency (ms),16,16,22.0405,35.9364,0.0,35.9364,True,35.9364,163.05
+High Utilization,latency_ms,Latency (ms),16,16,22.0405,35.8951,0.5,34.5195,True,35.8951,162.86
+High Latency,latency_ms,Latency (ms),16,16,22.0405,35.0882,0.5,34.6276,True,35.0882,159.2
+Battery Backup Fail,latency_ms,Latency (ms),18,18,22.0405,34.0467,0.0,34.0467,True,34.0467,154.47
+High Interference,utilization_pct,Utilization (%),16,16,60.3032,20.7899,2.75,17.1574,True,20.7899,34.48
+Fan Unit Failure,rtwp_dbm,RTWP (dBm),16,16,-104.4909,20.2284,0.5,19.1453,True,20.2284,-19.36
+High Utilization,rtwp_dbm,RTWP (dBm),16,16,-104.4909,20.0753,0.5,19.3278,True,20.0753,-19.21
+Low Throughput,rtwp_dbm,RTWP (dBm),21,21,-104.4909,19.9281,0.5,19.1376,True,19.9281,-19.07
+HO Failure Rate High,rtwp_dbm,RTWP (dBm),20,19,-104.4909,19.9236,0.0,19.9236,True,19.9236,-19.07
+RACH Congestion,rtwp_dbm,RTWP (dBm),11,11,-104.4909,19.8837,0.25,19.2346,True,19.8837,-19.03
+Transmission Fault,rtwp_dbm,RTWP (dBm),16,16,-104.4909,19.8503,0.25,19.0697,True,19.8503,-19.0
+Link Down,rtwp_dbm,RTWP (dBm),16,16,-104.4909,19.6897,0.5,19.5597,True,19.6897,-18.84
+Call Drop Rate High,rtwp_dbm,RTWP (dBm),15,15,-104.4909,19.6896,0.5,18.9756,True,19.6896,-18.84
+Fan Unit Failure,utilization_pct,Utilization (%),16,16,60.3032,19.613,3.25,15.3736,True,19.613,32.52
+SW Process Restart,rtwp_dbm,RTWP (dBm),14,14,-104.4909,19.5874,0.75,19.3402,True,19.5874,-18.75
+High Interference,rtwp_dbm,RTWP (dBm),16,16,-104.4909,19.4366,0.5,19.0478,True,19.4366,-18.6
+High Latency,rtwp_dbm,RTWP (dBm),16,16,-104.4909,18.9822,0.25,18.4109,True,18.9822,-18.17
+HO Failure Rate High,utilization_pct,Utilization (%),20,19,60.3032,18.4625,0.25,16.8025,True,18.4625,30.62
+Battery Backup Fail,rtwp_dbm,RTWP (dBm),18,18,-104.4909,18.3804,0.75,17.9537,True,18.3804,-17.59
+High Latency,utilization_pct,Utilization (%),16,16,60.3032,17.9924,0.25,16.6674,True,17.9924,29.84
+SW Process Restart,utilization_pct,Utilization (%),14,14,60.3032,17.8375,0.75,17.5882,True,17.8375,29.58
+Transmission Fault,utilization_pct,Utilization (%),16,16,60.3032,16.6349,3.0,13.6861,True,16.6349,27.59
+Low Throughput,utilization_pct,Utilization (%),21,21,60.3032,13.0806,2.5,6.6448,True,13.0806,21.69
+High Utilization,utilization_pct,Utilization (%),16,16,60.3032,-11.5632,-2.5,5.0861,False,11.5632,-19.18
+RACH Congestion,utilization_pct,Utilization (%),11,11,60.3032,10.4286,2.5,8.0186,True,10.4286,17.29
+Link Down,utilization_pct,Utilization (%),16,16,60.3032,10.0524,2.75,9.4018,True,10.0524,16.67
+High Utilization,handover_success_rate_pct,HO Success Rate (%),16,16,97.2587,-9.6596,0.5,-9.3711,True,9.6596,-9.93
+HO Failure Rate High,handover_success_rate_pct,HO Success Rate (%),20,19,97.2587,-9.59,0.5,-9.3603,True,9.59,-9.86
+RACH Congestion,handover_success_rate_pct,HO Success Rate (%),11,11,97.2587,-9.4948,0.5,-9.1856,True,9.4948,-9.76
+Transmission Fault,handover_success_rate_pct,HO Success Rate (%),16,16,97.2587,-9.4824,0.5,-9.4188,True,9.4824,-9.75
+Fan Unit Failure,handover_success_rate_pct,HO Success Rate (%),16,16,97.2587,-9.4347,0.5,-9.4184,True,9.4347,-9.7
+Low Throughput,handover_success_rate_pct,HO Success Rate (%),21,21,97.2587,-9.4176,0.0,-9.4176,True,9.4176,-9.68
+High Interference,handover_success_rate_pct,HO Success Rate (%),16,16,97.2587,-9.4012,0.0,-9.4012,True,9.4012,-9.67
+SW Process Restart,handover_success_rate_pct,HO Success Rate (%),14,14,97.2587,-9.4008,0.25,-9.2826,True,9.4008,-9.67
+Link Down,handover_success_rate_pct,HO Success Rate (%),16,16,97.2587,-9.3824,0.75,-9.122,True,9.3824,-9.65
+Call Drop Rate High,handover_success_rate_pct,HO Success Rate (%),15,15,97.2587,-9.3528,0.0,-9.3528,True,9.3528,-9.62
+Battery Backup Fail,handover_success_rate_pct,HO Success Rate (%),18,18,97.2587,-8.8367,0.0,-8.8367,True,8.8367,-9.09
+High Latency,handover_success_rate_pct,HO Success Rate (%),16,16,97.2587,-8.7494,0.25,-8.7098,True,8.7494,-9.0
+Battery Backup Fail,utilization_pct,Utilization (%),18,18,60.3032,8.6984,1.75,5.8795,True,8.6984,14.42
+Transmission Fault,availability_pct,Availability (%),16,16,99.3068,-7.453,0.25,-7.291,True,7.453,-7.51
+Link Down,availability_pct,Availability (%),16,16,99.3068,-7.4492,0.75,-7.28,True,7.4492,-7.5
+High Interference,availability_pct,Availability (%),16,16,99.3068,-7.4424,0.75,-7.3323,True,7.4424,-7.49
+SW Process Restart,availability_pct,Availability (%),14,14,99.3068,-7.4013,0.75,-7.2796,True,7.4013,-7.45
+HO Failure Rate High,availability_pct,Availability (%),20,19,99.3068,-7.3772,0.0,-7.3772,True,7.3772,-7.43
+Call Drop Rate High,availability_pct,Availability (%),15,15,99.3068,-7.3629,0.25,-7.236,True,7.3629,-7.41
+High Utilization,availability_pct,Availability (%),16,16,99.3068,-7.3567,0.0,-7.3567,True,7.3567,-7.41
+Low Throughput,availability_pct,Availability (%),21,21,99.3068,-7.3444,0.75,-7.2183,True,7.3444,-7.4
+RACH Congestion,availability_pct,Availability (%),11,11,99.3068,-7.343,0.5,-7.2407,True,7.343,-7.39
+Fan Unit Failure,availability_pct,Availability (%),16,16,99.3068,-7.3127,0.75,-7.307,True,7.3127,-7.36
+High Utilization,rach_success_rate_pct,RACH Success Rate (%),16,16,98.0229,-7.2087,0.25,-6.9327,True,7.2087,-7.35
+HO Failure Rate High,rach_success_rate_pct,RACH Success Rate (%),20,19,98.0229,-7.1818,0.0,-7.1818,True,7.1818,-7.33
+Link Down,rach_success_rate_pct,RACH Success Rate (%),16,16,98.0229,-7.1422,0.75,-7.047,True,7.1422,-7.29
+High Interference,rach_success_rate_pct,RACH Success Rate (%),16,16,98.0229,-7.1312,0.0,-7.1312,True,7.1312,-7.28
+RACH Congestion,rach_success_rate_pct,RACH Success Rate (%),11,11,98.0229,-7.1312,0.0,-7.1312,True,7.1312,-7.28
+Call Drop Rate High,utilization_pct,Utilization (%),15,15,60.3032,7.1201,-4.0,3.7628,True,7.1201,11.81
+Call Drop Rate High,rach_success_rate_pct,RACH Success Rate (%),15,15,98.0229,-7.1091,0.75,-6.9289,True,7.1091,-7.25
+SW Process Restart,rach_success_rate_pct,RACH Success Rate (%),14,14,98.0229,-7.0904,0.0,-7.0904,True,7.0904,-7.23
+Low Throughput,rach_success_rate_pct,RACH Success Rate (%),21,21,98.0229,-7.0899,0.0,-7.0899,True,7.0899,-7.23
+Fan Unit Failure,rach_success_rate_pct,RACH Success Rate (%),16,16,98.0229,-7.084,0.5,-6.8982,True,7.084,-7.23
+Transmission Fault,rach_success_rate_pct,RACH Success Rate (%),16,16,98.0229,-7.0671,0.0,-7.0671,True,7.0671,-7.21
+Battery Backup Fail,availability_pct,Availability (%),18,18,99.3068,-6.9361,0.75,-6.8471,True,6.9361,-6.98
+High Latency,availability_pct,Availability (%),16,16,99.3068,-6.9029,0.75,-6.6895,True,6.9029,-6.95
+Battery Backup Fail,rach_success_rate_pct,RACH Success Rate (%),18,18,98.0229,-6.6338,0.75,-6.612,True,6.6338,-6.77
+High Latency,rach_success_rate_pct,RACH Success Rate (%),16,16,98.0229,-6.5538,0.75,-6.5295,True,6.5538,-6.69
+Low Throughput,call_drop_rate_pct,Call Drop Rate (%),21,21,0.4777,3.0558,0.0,3.0558,True,3.0558,639.73
+HO Failure Rate High,call_drop_rate_pct,Call Drop Rate (%),20,19,0.4777,3.0549,0.25,3.0384,True,3.0549,639.54
+SW Process Restart,call_drop_rate_pct,Call Drop Rate (%),14,14,0.4777,3.0477,0.5,3.0128,True,3.0477,638.04
+High Utilization,call_drop_rate_pct,Call Drop Rate (%),16,16,0.4777,3.0456,0.25,3.0326,True,3.0456,637.6
+Call Drop Rate High,call_drop_rate_pct,Call Drop Rate (%),15,15,0.4777,3.0401,0.75,2.9657,True,3.0401,636.46
+Transmission Fault,call_drop_rate_pct,Call Drop Rate (%),16,16,0.4777,3.0362,0.75,3.0258,True,3.0362,635.64
+High Interference,call_drop_rate_pct,Call Drop Rate (%),16,16,0.4777,3.0343,0.5,3.0001,True,3.0343,635.25
+Link Down,call_drop_rate_pct,Call Drop Rate (%),16,16,0.4777,3.0336,0.75,2.97,True,3.0336,635.09
+Fan Unit Failure,call_drop_rate_pct,Call Drop Rate (%),16,16,0.4777,3.0305,0.5,3.004,True,3.0305,634.43
+RACH Congestion,call_drop_rate_pct,Call Drop Rate (%),11,11,0.4777,3.0102,0.75,3.0054,True,3.0102,630.18
+Battery Backup Fail,call_drop_rate_pct,Call Drop Rate (%),18,18,0.4777,2.8795,0.25,2.8073,True,2.8795,602.83
+High Latency,call_drop_rate_pct,Call Drop Rate (%),16,16,0.4777,2.8766,0.75,2.822,True,2.8766,602.22

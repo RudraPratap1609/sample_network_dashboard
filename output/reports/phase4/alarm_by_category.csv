@@ -1,0 +1,6 @@
+alarm_category,count,pct_of_total,avg_duration_min,severity_mix
+Radio,99,50.77,46.6,"{'Major': 67, 'Minor': 32}"
+Transport,48,24.62,46.7,"{'Critical': 32, 'Minor': 16}"
+Power,18,9.23,113.1,{'Critical': 18}
+Hardware,16,8.21,40.3,{'Warning': 16}
+Software,14,7.18,36.9,{'Warning': 14}

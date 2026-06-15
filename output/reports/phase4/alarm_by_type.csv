@@ -1,0 +1,13 @@
+alarm_type,alarm_category,count,pct_of_total,avg_duration_min,severity_mix,cumulative_pct
+Low Throughput,Radio,21,10.77,48.8,{'Minor': 21},10.77
+HO Failure Rate High,Radio,20,10.26,46.0,{'Major': 20},21.03
+Battery Backup Fail,Power,18,9.23,113.1,{'Critical': 18},30.26
+Fan Unit Failure,Hardware,16,8.21,40.3,{'Warning': 16},38.47
+Link Down,Transport,16,8.21,39.8,{'Critical': 16},46.68
+High Interference,Radio,16,8.21,45.4,{'Major': 16},54.89
+High Utilization,Radio,16,8.21,52.2,{'Major': 16},63.1
+High Latency,Transport,16,8.21,45.6,{'Minor': 16},71.31
+Transmission Fault,Transport,16,8.21,54.8,{'Critical': 16},79.52
+Call Drop Rate High,Radio,15,7.69,39.0,{'Major': 15},87.21
+SW Process Restart,Software,14,7.18,36.9,{'Warning': 14},94.39
+RACH Congestion,Radio,11,5.64,47.4,{'Minor': 11},100.03

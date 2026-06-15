@@ -1,0 +1,13 @@
+network_element_id,technology,region,n_observations,throughput_mbps_breach_pct,availability_pct_breach_pct,utilization_pct_breach_pct,latency_ms_breach_pct,rtwp_dbm_breach_pct,handover_success_rate_pct_breach_pct,call_drop_rate_pct_breach_pct,rach_success_rate_pct_breach_pct,any_breach_pct,avg_health_score,avg_simultaneous_kpi_breaches
+SITE_A,4G,South,2880,0.17,52.99,6.56,3.85,3.82,3.85,3.85,3.85,54.58,69.5,0.79
+SITE_H,4G,East,2880,0.42,52.74,5.0,3.16,3.16,3.16,3.16,3.16,54.06,70.0,0.74
+SITE_C,5G,North,2880,0.31,52.15,7.08,4.27,4.27,4.27,4.27,4.27,53.78,77.7,0.81
+SITE_K,4G,West,2880,0.31,52.43,5.42,3.82,3.82,3.82,3.82,3.82,53.75,69.6,0.77
+SITE_G,4G,West,2880,0.24,52.19,5.31,3.16,3.12,3.16,3.16,3.16,53.68,69.9,0.74
+SITE_J,4G,South,2880,0.56,51.63,4.79,2.85,2.81,2.85,2.85,2.85,53.44,70.2,0.71
+SITE_E,4G,West,2880,0.24,51.11,4.1,1.53,1.53,1.53,1.53,1.53,52.57,70.8,0.63
+SITE_D,4G,South,2880,0.14,51.01,5.0,2.6,2.57,2.6,2.6,2.6,52.53,70.3,0.69
+SITE_I,5G,North,2880,0.31,51.18,2.64,0.62,0.66,0.66,0.66,0.66,52.4,80.0,0.57
+SITE_F,4G,South,2880,0.17,50.76,4.24,2.05,1.98,2.05,2.05,2.05,52.08,70.6,0.65
+SITE_L,4G,East,2880,0.0,50.21,4.24,1.56,1.53,1.56,1.56,1.56,51.63,70.9,0.62
+SITE_B,4G,South,2880,0.07,48.89,3.72,0.31,0.31,0.31,0.31,0.31,50.87,71.6,0.54

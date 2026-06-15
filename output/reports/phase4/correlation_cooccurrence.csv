@@ -1,0 +1,62 @@
+alarm_type,kpi_metric,kpi_display,cooccurrence_count,total_degradation_events,cooccurrence_rate
+Low Throughput,availability_pct,Availability (%),10,1116,0.009
+High Utilization,availability_pct,Availability (%),9,1116,0.0081
+Battery Backup Fail,availability_pct,Availability (%),9,1116,0.0081
+HO Failure Rate High,availability_pct,Availability (%),8,1116,0.0072
+Call Drop Rate High,availability_pct,Availability (%),7,1116,0.0063
+RACH Congestion,availability_pct,Availability (%),6,1116,0.0054
+Transmission Fault,availability_pct,Availability (%),5,1116,0.0045
+High Latency,availability_pct,Availability (%),5,1116,0.0045
+Fan Unit Failure,availability_pct,Availability (%),4,1116,0.0036
+Transmission Fault,utilization_pct,Utilization (%),4,45,0.0889
+Transmission Fault,latency_ms,Latency (ms),4,63,0.0635
+Low Throughput,utilization_pct,Utilization (%),4,45,0.0889
+High Interference,availability_pct,Availability (%),3,1116,0.0027
+Battery Backup Fail,utilization_pct,Utilization (%),3,45,0.0667
+Link Down,availability_pct,Availability (%),3,1116,0.0027
+Transmission Fault,call_drop_rate_pct,Call Drop Rate (%),3,63,0.0476
+Transmission Fault,handover_success_rate_pct,HO Success Rate (%),3,63,0.0476
+Call Drop Rate High,rtwp_dbm,RTWP (dBm),3,65,0.0462
+SW Process Restart,rtwp_dbm,RTWP (dBm),3,65,0.0462
+Transmission Fault,rtwp_dbm,RTWP (dBm),3,65,0.0462
+Battery Backup Fail,rtwp_dbm,RTWP (dBm),3,65,0.0462
+Transmission Fault,rach_success_rate_pct,RACH Success Rate (%),3,63,0.0476
+High Interference,rtwp_dbm,RTWP (dBm),2,65,0.0308
+High Interference,utilization_pct,Utilization (%),2,45,0.0444
+Battery Backup Fail,throughput_mbps,Throughput (Mbps),2,4,0.5
+Battery Backup Fail,latency_ms,Latency (ms),2,63,0.0317
+High Latency,rtwp_dbm,RTWP (dBm),2,65,0.0308
+High Utilization,rtwp_dbm,RTWP (dBm),2,65,0.0308
+Link Down,rtwp_dbm,RTWP (dBm),2,65,0.0308
+Call Drop Rate High,handover_success_rate_pct,HO Success Rate (%),2,63,0.0317
+Call Drop Rate High,call_drop_rate_pct,Call Drop Rate (%),2,63,0.0317
+Call Drop Rate High,latency_ms,Latency (ms),2,63,0.0317
+Call Drop Rate High,rach_success_rate_pct,RACH Success Rate (%),2,63,0.0317
+High Interference,latency_ms,Latency (ms),1,63,0.0159
+Fan Unit Failure,utilization_pct,Utilization (%),1,45,0.0222
+Call Drop Rate High,utilization_pct,Utilization (%),1,45,0.0222
+High Latency,utilization_pct,Utilization (%),1,45,0.0222
+Link Down,throughput_mbps,Throughput (Mbps),1,4,0.25
+High Latency,throughput_mbps,Throughput (Mbps),1,4,0.25
+SW Process Restart,throughput_mbps,Throughput (Mbps),1,4,0.25
+Link Down,utilization_pct,Utilization (%),1,45,0.0222
+RACH Congestion,utilization_pct,Utilization (%),1,45,0.0222
+SW Process Restart,availability_pct,Availability (%),1,1116,0.0009
+High Utilization,utilization_pct,Utilization (%),1,45,0.0222
+Link Down,latency_ms,Latency (ms),1,63,0.0159
+Battery Backup Fail,handover_success_rate_pct,HO Success Rate (%),1,63,0.0159
+HO Failure Rate High,rtwp_dbm,RTWP (dBm),1,65,0.0154
+Low Throughput,rtwp_dbm,RTWP (dBm),1,65,0.0154
+Fan Unit Failure,rtwp_dbm,RTWP (dBm),1,65,0.0154
+High Latency,latency_ms,Latency (ms),1,63,0.0159
+High Latency,handover_success_rate_pct,HO Success Rate (%),1,63,0.0159
+Link Down,handover_success_rate_pct,HO Success Rate (%),1,63,0.0159
+High Interference,handover_success_rate_pct,HO Success Rate (%),1,63,0.0159
+Link Down,call_drop_rate_pct,Call Drop Rate (%),1,63,0.0159
+High Interference,call_drop_rate_pct,Call Drop Rate (%),1,63,0.0159
+Battery Backup Fail,call_drop_rate_pct,Call Drop Rate (%),1,63,0.0159
+High Latency,call_drop_rate_pct,Call Drop Rate (%),1,63,0.0159
+Battery Backup Fail,rach_success_rate_pct,RACH Success Rate (%),1,63,0.0159
+High Interference,rach_success_rate_pct,RACH Success Rate (%),1,63,0.0159
+Link Down,rach_success_rate_pct,RACH Success Rate (%),1,63,0.0159
+High Latency,rach_success_rate_pct,RACH Success Rate (%),1,63,0.0159

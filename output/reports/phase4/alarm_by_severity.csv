@@ -1,0 +1,5 @@
+severity,severity_rank,count,pct_of_total,avg_duration_min,median_duration_min,affected_sites
+Critical,1,50,25.64,71.0,42.5,11
+Major,2,67,34.36,45.8,44.0,12
+Minor,3,48,24.62,47.4,50.5,12
+Warning,4,30,15.38,38.7,37.5,11

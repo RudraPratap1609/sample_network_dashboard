@@ -1,0 +1,9 @@
+metric,display_name,breach_direction,threshold,breach_count,breach_rate_pct,total_observations
+availability_pct,Availability (%),below,99.5,17778,51.44,34560
+utilization_pct,Utilization (%),above,80.0,1673,4.84,34560
+call_drop_rate_pct,Call Drop Rate (%),above,2.0,859,2.49,34560
+handover_success_rate_pct,HO Success Rate (%),below,95.0,859,2.49,34560
+rach_success_rate_pct,RACH Success Rate (%),below,95.0,859,2.49,34560
+latency_ms,Latency (ms),above,50.0,858,2.48,34560
+rtwp_dbm,RTWP (dBm),above,-90.0,852,2.47,34560
+throughput_mbps,Throughput (Mbps),below,10.0,85,0.25,34560
