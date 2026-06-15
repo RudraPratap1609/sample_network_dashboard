@@ -974,33 +974,35 @@ def _kpi_breach_by_metric(breach_metric: pd.DataFrame | None) -> go.Figure | Non
     return fig
 
 def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | None:
-    """Line chart: breach intensity trend by hour of the day."""
+    """Line chart: breach intensity trend by hour of the day using bulletproof Graph Objects."""
     if breach_temporal is None or breach_temporal.empty:
         return None
 
     # 1. Sort cleanly by hour matrix sequence
     df = breach_temporal.sort_values("hour").copy()
 
-    # 2. Build line plot cleanly with absolute column properties (no metric grouping variables)
-    fig = px.line(
-        df,
-        x="hour",
-        y="breach_rate_pct",  
-        labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)"},
-    )
-    
-    # 3. Apply custom solid monochromatic accent color to the line
-    fig.update_traces(
-        mode="lines+markers",
-        line_shape="linear",
-        line_color=C_ACCENT,  # Sleek unified brand accent color line
-        marker_size=6,
-        hovertemplate="Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>",
+    # 2. Extract arrays explicitly to prevent any internal Pandas index/column inspection
+    hours_list = df["hour"].tolist()
+    rates_list = df["breach_rate_pct"].tolist()
+
+    # 3. Create the figure using lower-level Graph Objects (Circumvents Plotly Express KeyErrors)
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=hours_list,
+            y=rates_list,
+            mode="lines+markers",
+            line=dict(color=C_ACCENT, width=2.5),
+            marker=dict(size=6, color=C_ACCENT),
+            name="Breach Rate",
+            hovertemplate="Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>"
+        )
     )
 
-    # 4. Apply strict layout overrides individually without expanding the shared layout dict
+    # 4. Apply clean layout dimensions and clear margins explicitly
     fig.update_layout(
-        margin=dict(l=40, r=20, t=45, b=40),
+        margin=dict(l=45, r=20, t=45, b=40),
         hovermode="closest",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -1010,17 +1012,19 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
             text="Hourly Activity Signature",
             font=dict(size=13, color="#8A9BB0", family="Inter, sans-serif"),
         ),
-        showlegend=False  # No need for a legend since it's a single, crisp timeline tracking profile
+        showlegend=False
     )
 
-    # 5. Inject isolated grid styling properties cleanly 
+    # 5. Safely apply axis grid formatting directly
     fig.update_xaxes(
         tickmode="linear",
         tick0=0,
         dtick=2,
         gridcolor="rgba(90,122,154,0.07)",
-        zeroline=False
+        zeroline=False,
+        title="Hour of day (0-23)"
     )
+    
     fig.update_yaxes(
         gridcolor="rgba(90,122,154,0.07)",
         zeroline=False
