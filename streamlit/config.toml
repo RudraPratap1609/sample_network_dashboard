@@ -1,1 +1,25 @@
+[theme]
+# Primary accent color for interactive elements (widgets, sliders, links)
+primaryColor = "#FF4B4B"
 
+# Deep charcoal background for the main content area
+backgroundColor = "#0E1117"
+
+# Slightly lighter slate gray for sidebar and container background contrast
+secondaryBackgroundColor = "#1E222B"
+
+# Crisp off-white for primary readability
+textColor = "#FAFAFA"
+
+# Clean, modern sans-serif stack for professional data applications
+font = "sans serif"
+
+[ui]
+# Hides the distracting default top-right menu and bottom "Made with Streamlit" footer
+hideTopBarWithContextMenu = true
+
+[server]
+# Optimizes compression to make chart rendering and data fetching feel snappy
+enableCORS = false
+enableXsrfProtection = true
+gzip = true
