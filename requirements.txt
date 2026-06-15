@@ -1,0 +1,38 @@
+# HFCL EMS Data Analysis Project — Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core data
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Database connectivity (for real EMS DB — optional for CSV mode)
+SQLAlchemy>=2.0.0
+# Add your DB driver below depending on your EMS database engine:
+# psycopg2-binary>=2.9.0      # PostgreSQL
+# pymysql>=1.0.0              # MySQL / MariaDB
+# cx_Oracle>=8.3.0            # Oracle
+# pyodbc>=4.0.0               # MS SQL Server / ODBC
+
+# Visualisation
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.14.0
+
+# Statistics & ML (Phase 4+)
+scipy>=1.10.0
+scikit-learn>=1.2.0
+statsmodels>=0.14.0
+
+# Automated profiling (Phase 2)
+ydata-profiling>=4.5.0
+
+# Reporting (Phase 5+)
+openpyxl>=3.1.0
+Jinja2>=3.1.0
+
+# Dashboard (Phase 5)
+streamlit>=1.32.0
+
+# Utilities
+python-dotenv>=1.0.0
+tqdm>=4.65.0
