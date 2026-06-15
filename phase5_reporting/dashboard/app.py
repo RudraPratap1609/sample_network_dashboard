@@ -974,32 +974,36 @@ def _kpi_breach_by_metric(breach_metric: pd.DataFrame | None) -> go.Figure | Non
     return fig
 
 def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | None:
-    """Line chart: breach frequency by hour of the day."""
+    """Line chart: breach intensity trend by hour of the day."""
     if breach_temporal is None or breach_temporal.empty:
         return None
 
     df = breach_temporal.sort_values("hour").copy()
+    
+    # Check if 'metric' column exists for grouping, fallback to no grouping if missing
+    color_col = "metric" if "metric" in df.columns else None
+
     fig = px.line(
         df,
         x="hour",
-        y="breach_count",
-        color="metric",
+        y="breach_rate_pct",  # FIX: Matched to the exact column present in your dataframe
+        color=color_col,
         color_discrete_sequence=[C_ACCENT, C_AMBER, C_RED, C_BLUE],
-        labels={"hour": "Hour of day (0-23)", "breach_count": "Breach count"},
+        labels={"hour": "Hour of day (0-23)", "breach_rate_pct": "Breach Rate (%)"},
     )
     
     fig.update_traces(
         mode="lines+markers",
         line_shape="linear",
         marker_size=5,
-        hovertemplate="<b>%{colorscale}</b><br>Hour %{x}:00<br>Breaches: <b>%{y:,}</b><extra></extra>",
+        hovertemplate="Hour <b>%{x}:00</b><br>Breach Rate: <b>%{y:.2f}%</b><extra></extra>",
     )
 
     # Update general properties cleanly using base layout setup
     fig.update_layout(
         **_LAYOUT_BASE,
         height=300,
-        yaxis_title="Breach Count",
+        yaxis_title="Breach Rate (%)",
         title=dict(
             text="Hourly Activity Signature",
             font=dict(size=13, color="#8A9BB0", family="Inter, sans-serif"),
@@ -1014,7 +1018,7 @@ def _kpi_breach_by_hour(breach_temporal: pd.DataFrame | None) -> go.Figure | Non
         ),
     )
 
-    # FIX: Overriding xaxis definitions safely via explicit modifier
+    # Modify specific xaxis parameters cleanly to prevent layout dictionary collisions
     fig.update_xaxes(
         tickmode="linear",
         tick0=0,
