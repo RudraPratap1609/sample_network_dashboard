@@ -1037,37 +1037,48 @@ def _kpi_site_heatmap(breach_site: pd.DataFrame | None) -> go.Figure | None:
     if breach_site is None or breach_site.empty:
         return None
 
-    # Pivot dataframe values appropriately for intensity rendering
-    pivot_df = breach_site.pivot(
-        index="display_name", columns="network_element_id", values="breach_count"
+    df = breach_site.copy()
+
+    # 1. FIX: Fallback to 'metric' if 'display_name' does not exist in the CSV columns
+    if "display_name" not in df.columns and "metric" in df.columns:
+        df["display_name"] = df["metric"].map(lambda x: KPI_LABELS.get(x, x))
+    elif "display_name" not in df.columns:
+        df["display_name"] = "Unknown Metric"
+
+    # Verify required tracking columns exist before building pivot matrix
+    y_col = "display_name"
+    x_col = "network_element_id" if "network_element_id" in df.columns else df.columns[0]
+    z_col = "breach_count" if "breach_count" in df.columns else df.columns[1]
+
+    # 2. Pivot dataframe values appropriately for intensity rendering
+    pivot_df = df.pivot(
+        index=y_col, columns=x_col, values=z_col
     ).fillna(0)
 
     if pivot_df.empty:
         return None
 
-    fig = px.imshow(
-        pivot_df,
-        labels=dict(x="Network Node / Site ID", y="", color="Breaches"),
-        color_continuous_scale=[[0, "#1E222B"], [0.1, "rgba(43,94,167,0.4)"], [1, C_RED]],
+    # 3. Use lower-level go.Heatmap to ensure total safety against global template trace collisions
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=pivot_df.values,
+            x=pivot_df.columns.tolist(),
+            y=pivot_df.index.tolist(),
+            colorscale=[[0, "#1E222B"], [0.1, "rgba(43,94,167,0.4)"], [1, C_RED]],
+            hovertemplate="Node: <b>%{x}</b><br>Metric: <b>%{y}</b><br>Breaches: <b>%{z:,}</b><extra></extra>"
+        )
     )
 
-    fig.update_traces(
-        hovertemplate="Node: <b>%{x}</b><br>Metric: <b>%{y}</b><br>Breaches: <b>%{z:,}</b><extra></extra>"
-    )
-
+    # 4. Clean styling variables
     fig.update_layout(
-        **_LAYOUT_BASE,
+        margin=dict(l=40, r=20, t=35, b=40),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         height=380,
-        coloraxis_showscale=True,
-        coloraxis_colorbar=dict(
-            title="Events",
-            thickness=12,
-            len=0.8,
-        ),
     )
 
-    # FIX: Isolate specific configuration updates for X and Y axes cleanly
-    fig.update_xaxes(tickangle=45, gridcolor="rgba(90,122,154,0.05)")
+    # Isolate specific configuration updates for X and Y axes cleanly
+    fig.update_xaxes(tickangle=45, gridcolor="rgba(90,122,154,0.05)", title="Network Node / Site ID")
     fig.update_yaxes(gridcolor="rgba(90,122,154,0.05)")
 
     return fig
